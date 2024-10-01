@@ -2,10 +2,11 @@ const button = document.querySelectorAll('.button')
 const body = document.querySelector('body')
 const texts = document.querySelectorAll('h1')
 const h2s = document.querySelectorAll('h2')
-console.log(button)
+
+
 
 button.forEach(function (button) {
-  button.addEventListener('click', function(e){
+  button.addEventListener('mouseover', function(e){
     console.log(e)
     console.log(e.target)
     if(e.target.id == 'grey'){
@@ -16,7 +17,6 @@ button.forEach(function (button) {
       h2s.forEach(function(each){
         each.style.color = "white"
       })
-
     }
     if(e.target.id == 'white'){
       body.style.background = e.target.id
