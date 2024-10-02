@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circle at click</title>
+  <style>
+    .heading {
+      text-align: center;
+      font-family: monospace;
+    }
+    .circle {
+      width: 20px;
+      height: 20px;
+      background-color: aliceblue;
+      border-radius: 50%;
+      position: absolute;
+      transform: translate(-50%, -50%);
+    }
+    .line {
+      position: absolute;
+      background-color: aliceblue;
+      height: 2px; /* Set the thickness of the line */
+      transform-origin: 0 0; /* Start the transformation from the top-left corner */
+    }
+  </style>
+</head>
+<body style="background-color: #0A0A0A; color: aliceblue;">
+  <h1 class="heading">Click anywhere you want</h1>
+  
+</body>
+<script>
+  let lastX = null;
+  let lastY = null;
+
+  document.querySelector('html').addEventListener('click', function(event) {
+    let x = event.clientX;
+    let y = event.clientY;
+
+    // Create a new circle
+    const circle = document.createElement('div');
+    circle.classList.add('circle');
+    circle.style.left = `${x}px`;
+    circle.style.top = `${y}px`;
+    document.body.appendChild(circle);
+
+    // If there's a previous circle, create a line connecting it to the new one
+    if (lastX !== null && lastY !== null) {
+      const line = document.createElement('div');
+      line.classList.add('line');
+
+      // Adjust the starting points to account for the circle's translate(-50%, -50%) (half of circle's width and height)
+      let circleOffset = 10;  // half of 20px (circle size)
+
+      let adjustedLastX = lastX;
+      let adjustedLastY = lastY;
+      let adjustedX = x;
+      let adjustedY = y;
+
+      // Calculate the distance between the two points (length of the line)
+      let deltaX = adjustedX - adjustedLastX;
+      let deltaY = adjustedY - adjustedLastY;
+      let distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+      // Set the length and position of the line
+      line.style.width = `${distance}px`;
+      line.style.left = `${adjustedLastX + circleOffset}px`;  // account for the offset in position
+      line.style.top = `${adjustedLastY + circleOffset}px`;   // account for the offset in position
+
+      // Calculate the angle of the line
+      let angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
+      line.style.transform = `rotate(${angle}deg)`;
+
+      document.body.appendChild(line);
+    }
+
+    // Update lastX and lastY to the current circle's position
+    lastX = x;
+    lastY = y;
+  });
+</script>
+</html>
